@@ -1,28 +1,62 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8">
         <title>News Tool</title>
+
+        <style>
+
+            body{
+                font-family: Arial;
+                background:#f5f5f5;
+                text-align:center;
+            }
+
+            .container{
+                width:600px;
+                margin:auto;
+            }
+
+            button{
+                padding:10px 20px;
+                font-size:16px;
+                margin:20px;
+            }
+
+            .card{
+                background:white;
+                padding:15px;
+                margin:10px;
+                border-radius:8px;
+                box-shadow:0 2px 5px rgba(0,0,0,0.2);
+            }
+
+        </style>
+
     </head>
 
     <body>
-    <h1>ニュース取得ツール</h1>
-    <button onclick="getNews()">ニュース取得</button>
-    <ul id="newsList"></ul>
+
+        <div class="container">
+            <h1>ニュース取得ツール</h1>
+            <button onclick="getNews()">ニュース取得</button>
+            <div id="newsList"></div>
+        </div>
 
         <script>
-
-            async function getNews() {
-            const response = await fetch("http://127.0.0.1:8000/news")
-            const data = await response.json()
-            const list = document.getElementById("newsList")
-            list.innerHTML = ""
-            data.forEach(news => {
-                const li = document.createElement("li")
-                li.textContent = news
-                list.appendChild(li)
-            })
-        }
+            async function getNews(){
+                const response = await fetch("http://127.0.0.1:8000/news")
+                const data = await response.json()
+                const list = document.getElementById("newsList")
+                list.innerHTML = ""
+                    data.forEach(news => {
+                    const div = document.createElement("div")
+                    div.className="card"
+                    div.textContent=news
+                    list.appendChild(div)
+                    })
+            }
         </script>
 
     </body>
