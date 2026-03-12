@@ -1,11 +1,29 @@
-<button onclick="getNews()">ニュース取得</button>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>News Tool</title>
+    </head>
 
-<ul id="news"></ul>
+    <body>
+    <h1>ニュース取得ツール</h1>
+    <button onclick="getNews()">ニュース取得</button>
+    <ul id="newsList"></ul>
 
-<script>
-async function getNews(){
-    const res = await fetch("http://127.0.0.1:8000/news");
-    const data = await res.json();
-    console.log(data);
-}
-</script>
+        <script>
+
+            async function getNews() {
+            const response = await fetch("http://127.0.0.1:8000/news")
+            const data = await response.json()
+            const list = document.getElementById("newsList")
+            list.innerHTML = ""
+            data.forEach(news => {
+                const li = document.createElement("li")
+                li.textContent = news
+                list.appendChild(li)
+            })
+        }
+        </script>
+
+    </body>
+</html>
