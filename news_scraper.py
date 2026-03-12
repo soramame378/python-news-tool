@@ -1,12 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
 
-url = "https://news.yahoo.co.jp"
+def get_news():
 
-response = requests.get(url)
-soup = BeautifulSoup(response.text, "html.parser")
+    url = "https://news.yahoo.co.jp/"
 
-titles = soup.find_all("a")
+    res = requests.get(url)
 
-for t in titles[:10]:
-    print(t.text)
+    soup = BeautifulSoup(res.text, "html.parser")
+
+    titles = []
+
+    for item in soup.select("a.sc-110wjhy-2"):
+        titles.append(item.text)
+
+    return titles[:5]
