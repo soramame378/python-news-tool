@@ -1,0 +1,11 @@
+<button onclick="getNews()">ニュース取得</button>
+
+<ul id="news"></ul>
+
+<script>
+async function getNews(){
+    const res = await fetch("http://127.0.0.1:8000/news");
+    const data = await res.json();
+    console.log(data);
+}
+</script>
