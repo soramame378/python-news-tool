@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-"""一時的な可視化のため、実際のスクレイピングコードをコメントアウトしています。
+
 def get_news():
 
     url = "https://news.yahoo.co.jp/"
@@ -15,12 +15,5 @@ def get_news():
         titles.append(item.text)
 
     return titles[:5]
-"""
 
-"""テスト用のダミーデータを返す関数"""
-def get_news():
-    return [
-        "テストニュース1",
-        "テストニュース2",
-        "テストニュース3"
-    ]
+
