@@ -21,7 +21,7 @@ app.add_middleware(
 
     # APIアクセスを許可するドメイン
     allow_origins=[
-        "http://127.0.0.1:8000"
+        "*"
     ],
 
     # Cookieなど認証情報の送信を許可
