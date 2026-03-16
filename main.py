@@ -1,63 +1,60 @@
-# main.py 修正版
-
-# FastAPI本体
+# FastAPI本体をインポート
 from fastapi import FastAPI
 
-# CORS設定（別ドメインからのアクセスを許可するため）
+# CORS設定のためのミドルウェア
 from fastapi.middleware.cors import CORSMiddleware
 
-# HTMLファイルを返すための機能
-from fastapi.responses import FileResponse
-
-# ニュース取得関数を読み込む
+# 作成したニュース取得関数を読み込む
 from news_scraper import get_news
 
-# ファイルパス操作用ライブラリ
-import os
 
-
-# FastAPIアプリ作成
+# FastAPIアプリケーションを作成
 app = FastAPI()
 
 
-# -----------------------------
 # CORS設定
-# -----------------------------
-# JavaScriptからAPIアクセスするために必要
-# * = どこからでもアクセス可能
+# （ブラウザからAPIを呼び出すために必要）
 app.add_middleware(
+
+    # CORSミドルウェアを追加
     CORSMiddleware,
-    allow_origins=["*"],   # 許可するURL
-    allow_methods=["*"],   # 許可するHTTPメソッド
-    allow_headers=["*"],   # 許可するヘッダ
+
+    # APIアクセスを許可するドメイン
+    allow_origins=[
+        "http://127.0.0.1:8000"
+    ],
+
+    # Cookieなど認証情報の送信を許可
+    allow_credentials=True,
+
+    # すべてのHTTPメソッドを許可
+    allow_methods=["*"],
+
+    # すべてのHTTPヘッダーを許可
+    allow_headers=["*"],
 )
 
 
-# -----------------------------
-# ルートアクセス
-# -----------------------------
-# http://127.0.0.1:8000 にアクセスしたとき
-@app.get("/")
-
-def home():
-
-    # index.html をブラウザに返す
-    return FileResponse(
-        os.path.join(
-            os.path.dirname(__file__),  # このファイルの場所
-            "index.html"                # index.html
-        )
-    )
-
-
-# -----------------------------
-# ニュース取得API
-# -----------------------------
-# http://127.0.0.1:8000/news
+# /news にアクセスされたときの処理
 @app.get("/news")
-
 def news():
 
-    # news_scraper.py の get_news() を実行
-    # ニュースタイトルのリストを返す
-    return get_news()
+    try:
+
+        # ニュース取得関数を実行
+        news_data = get_news()
+
+        # 成功レスポンスをJSON形式で返す
+        return {
+            "status": "success",
+            "data": news_data
+        }
+
+    # 例外（エラー）が発生した場合
+    except Exception as e:
+
+        # エラー内容を返す
+        return {
+            "status": "error",
+            "message": str(e)
+        }

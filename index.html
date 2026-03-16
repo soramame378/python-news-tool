@@ -61,40 +61,44 @@
 
         <script>
 
-            // ニュース取得関数
-            async function getNews(){
+        // ニュースを取得する非同期関数
+        async function getNews(){
 
-                // FastAPIサーバーにアクセス
-                const response = await fetch("http://127.0.0.1:8000/news")
+            // FastAPIの /news APIにアクセス
+            const response = await fetch("http://127.0.0.1:8000/news")
 
-                // JSONデータに変換
-                const data = await response.json()
+            // JSON形式に変換
+            const data = await response.json()
 
-                // ニュース表示エリア取得
-                const list = document.getElementById("newsList")
+            // ニュース表示エリアを取得
+            const list = document.getElementById("newsList")
 
-                // 表示を一旦空にする
-                list.innerHTML = ""
+            // 以前のニュースを削除
+            list.innerHTML=""
 
-                // ニュースを1件ずつ表示
-                data.forEach(news => {
+            // APIがエラーを返した場合
+            if(data.status === "error"){
 
-                    // div作成
-                    const div = document.createElement("div")
+                // エラーメッセージ表示
+                list.innerHTML="ニュース取得エラー"
 
-                    // CSSクラス追加
-                    div.className="card"
-
-                    // ニュースタイトル設定
-                    div.textContent=news
-
-                    // 画面に追加
-                    list.appendChild(div)
-
-                })
+                return
             }
 
-        </script>
+            // ニュース配列を1つずつ処理
+            data.data.forEach(news => {
 
+                const div=document.createElement("div")
+
+                div.className="card"
+
+                div.textContent=news
+
+                list.appendChild(div)
+
+            })
+        }
+
+        </script>
     </body>
 </html>

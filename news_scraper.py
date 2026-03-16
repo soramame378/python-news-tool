@@ -1,34 +1,48 @@
-# HTTP通信を行うライブラリ（Webページを取得するため）
+# HTTP通信を行うためのライブラリ
 import requests
 
-# HTML解析ライブラリ（スクレイピング）
+# HTMLを解析するためのライブラリ（スクレイピングでよく使う）
 from bs4 import BeautifulSoup
 
 
-# ニュース取得関数
+# ニュースを取得する関数
 def get_news():
 
-    # ニュース取得元のURL
+    # 取得するニュースサイトのURL
     url = "https://news.yahoo.co.jp/"
 
-    # URLにアクセスしてHTMLを取得
-    # resにはレスポンス（ページ情報）が入る
-    res = requests.get(url)
+    # HTTPヘッダー
+    # 一部のサイトは「ブラウザからのアクセス」でないとブロックするため
+    headers = {
+        "User-Agent": "Mozilla/5.0"
+    }
 
-    # HTMLを解析する準備
-    # res.text = HTMLの中身
-    # html.parser = Python標準のHTML解析エンジン
+    # 指定URLにHTTPリクエストを送信
+    # res にレスポンス（HTMLデータなど）が入る
+    res = requests.get(url, headers=headers)
+
+    # HTMLを解析するためBeautifulSoupに渡す
+    # res.text → 取得したHTML文字列
+    # html.parser → Python標準のHTML解析エンジン
     soup = BeautifulSoup(res.text, "html.parser")
 
-    # ニュースタイトルを保存するリスト
+    # ニュースタイトルを入れるリスト
     titles = []
 
-    # CSSセレクタでニュースタイトル部分を取得
-    # a.sc-110wjhy-2 に該当するHTML要素を全部取得
-    for item in soup.select("a.sc-110wjhy-2"):
+    # HTML内のすべてのaタグ（リンク）を取得
+    # soup.select()はCSSセレクタでHTML要素を取得できる
+    for item in soup.select("a"):
 
-        # 要素のテキスト（ニュースタイトル）を取得してリストに追加
-        titles.append(item.text)
+        # aタグのテキスト部分（リンクタイトル）を取得
+        # strip()は前後の空白や改行を削除する
+        title = item.text.strip()
+
+        # タイトルが短すぎるものは除外
+        # （メニューなどの不要なリンクが含まれるため）
+        if len(title) > 20:
+
+            # ニュースタイトルリストに追加
+            titles.append(title)
 
     # 最初の5件だけ返す
     return titles[:5]
