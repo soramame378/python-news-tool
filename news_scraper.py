@@ -1,48 +1,47 @@
-# HTTP通信を行うためのライブラリ
+# HTTP通信を行うライブラリ
 import requests
 
-# HTMLを解析するためのライブラリ（スクレイピングでよく使う）
+# HTML解析ライブラリ（スクレイピングで使用）
 from bs4 import BeautifulSoup
 
 
-# ニュースを取得する関数
+# ニュース取得関数
 def get_news():
 
-    # 取得するニュースサイトのURL
+    # 取得するニュースサイト
     url = "https://news.yahoo.co.jp/"
 
-    # HTTPヘッダー
-    # 一部のサイトは「ブラウザからのアクセス」でないとブロックするため
+    # ブラウザアクセスを装うヘッダー
     headers = {
         "User-Agent": "Mozilla/5.0"
     }
 
-    # 指定URLにHTTPリクエストを送信
-    # res にレスポンス（HTMLデータなど）が入る
+    # HTTPリクエスト送信
     res = requests.get(url, headers=headers)
 
-    # HTMLを解析するためBeautifulSoupに渡す
-    # res.text → 取得したHTML文字列
-    # html.parser → Python標準のHTML解析エンジン
+    # HTML解析
     soup = BeautifulSoup(res.text, "html.parser")
 
-    # ニュースタイトルを入れるリスト
-    titles = []
+    # ニュース保存リスト
+    news_list = []
 
-    # HTML内のすべてのaタグ（リンク）を取得
-    # soup.select()はCSSセレクタでHTML要素を取得できる
+    # すべてのaタグ取得
     for item in soup.select("a"):
 
-        # aタグのテキスト部分（リンクタイトル）を取得
-        # strip()は前後の空白や改行を削除する
+        # タイトル取得
         title = item.text.strip()
 
-        # タイトルが短すぎるものは除外
-        # （メニューなどの不要なリンクが含まれるため）
-        if len(title) > 20:
+        # リンク取得
+        link = item.get("href")
 
-            # ニュースタイトルリストに追加
-            titles.append(title)
+        # タイトルが長いものだけ採用
+        if len(title) > 20 and link:
+
+            # 辞書形式で保存
+            news_list.append({
+                "title": title,
+                "link": link
+            })
 
     # 最初の5件だけ返す
-    return titles[:5]
+    return news_list[:5]
