@@ -2,28 +2,36 @@
 <html>
 
     <head>
+
+        <!-- 文字コード -->
         <meta charset="UTF-8">
+
+        <!-- ページタイトル -->
         <title>News Tool</title>
 
         <style>
 
+            /* ページ全体のスタイル */
             body{
                 font-family: Arial;
                 background:#f5f5f5;
                 text-align:center;
             }
 
+            /* コンテンツ中央配置 */
             .container{
                 width:600px;
                 margin:auto;
             }
 
+            /* ボタンデザイン */
             button{
                 padding:10px 20px;
                 font-size:16px;
                 margin:20px;
             }
 
+            /* ニュースカード */
             .card{
                 background:white;
                 padding:15px;
@@ -39,24 +47,53 @@
     <body>
 
         <div class="container">
+
+            <!-- タイトル -->
             <h1>ニュース取得ツール</h1>
+
+            <!-- ボタン -->
             <button onclick="getNews()">ニュース取得</button>
+
+            <!-- ニュース表示エリア -->
             <div id="newsList"></div>
+
         </div>
 
         <script>
+
+            // ニュース取得関数
             async function getNews(){
+
+                // FastAPIサーバーにアクセス
                 const response = await fetch("http://127.0.0.1:8000/news")
+
+                // JSONデータに変換
                 const data = await response.json()
+
+                // ニュース表示エリア取得
                 const list = document.getElementById("newsList")
+
+                // 表示を一旦空にする
                 list.innerHTML = ""
-                    data.forEach(news => {
+
+                // ニュースを1件ずつ表示
+                data.forEach(news => {
+
+                    // div作成
                     const div = document.createElement("div")
+
+                    // CSSクラス追加
                     div.className="card"
+
+                    // ニュースタイトル設定
                     div.textContent=news
+
+                    // 画面に追加
                     list.appendChild(div)
-                    })
+
+                })
             }
+
         </script>
 
     </body>
