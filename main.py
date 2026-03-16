@@ -1,5 +1,5 @@
 # FastAPI本体をインポート
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 
 # CORS設定のためのミドルウェア
 from fastapi.middleware.cors import CORSMiddleware
