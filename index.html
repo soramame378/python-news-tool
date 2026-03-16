@@ -33,11 +33,20 @@
 
             /* ニュースカード */
             .card{
-                background:white;
-                padding:15px;
-                margin:10px;
-                border-radius:8px;
-                box-shadow:0 2px 5px rgba(0,0,0,0.2);
+
+            padding:10px;
+            margin:10px;
+            border:1px solid #ccc;
+            display:block;
+            text-decoration:none;
+            color:black;
+
+            }
+
+            .card:hover{
+
+            background:#f0f0f0;
+
             }
 
         </style>
@@ -107,6 +116,12 @@
 
             })
         }
+
+        // ページ読み込み時にニュース取得
+        getNews()
+
+        // 60秒ごとにニュース更新
+        setInterval(getNews,60000)
 
         </script>
     </body>
