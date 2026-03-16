@@ -37,12 +37,12 @@ app.add_middleware(
 
 # /news にアクセスされたときの処理
 @app.get("/news")
-def news():
+def news(category: str = Query("top")):
 
     try:
 
         # ニュース取得関数を実行
-        news_data = get_news()
+        news_data = get_news(category)
 
         # 成功レスポンスをJSON形式で返す
         return {

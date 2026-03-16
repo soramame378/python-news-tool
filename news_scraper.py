@@ -5,11 +5,24 @@ import requests
 from bs4 import BeautifulSoup
 
 
-# ニュース取得関数
-def get_news():
+def get_news(category="top"):
 
-    # 取得するニュースサイト
-    url = "https://news.yahoo.co.jp/"
+    # カテゴリURL
+    urls = {
+
+        "top": "https://news.yahoo.co.jp/",
+
+        "it": "https://news.yahoo.co.jp/categories/it",
+
+        "business": "https://news.yahoo.co.jp/categories/business",
+
+        "world": "https://news.yahoo.co.jp/categories/world",
+
+        "sports": "https://news.yahoo.co.jp/categories/sports"
+    }
+
+    # URL取得
+    url = urls.get(category, urls["top"])
 
     # ブラウザアクセスを装うヘッダー
     headers = {

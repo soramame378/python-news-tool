@@ -60,6 +60,15 @@
             <!-- タイトル -->
             <h1>ニュース取得ツール</h1>
 
+            <!-- ニュースカテゴリ選択 -->
+            <select id="category">
+                <option value="top">トップ</option>
+                <option value="it">IT</option>
+                <option value="business">経済</option>
+                <option value="world">国際</option>
+                <option value="sports">スポーツ</option>
+            </select>
+
             <!-- ボタン -->
             <button onclick="getNews()">ニュース取得</button>
 
@@ -73,19 +82,22 @@
         // ニュース取得関数
         async function getNews(){
 
-            // FastAPI APIにアクセス
-            const response = await fetch("http://127.0.0.1:8000/news")
+            // カテゴリ取得
+            const category = document.getElementById("category").value
 
-            // JSONに変換
+            // API URL（カテゴリ付き）
+            const url = "http://127.0.0.1:8000/news?category=" + category
+
+            // APIアクセス
+            const response = await fetch(url)
+
+            // JSON変換
             const data = await response.json()
 
-            // ニュース表示エリア取得
             const list = document.getElementById("newsList")
 
-            // 前のニュース削除
             list.innerHTML=""
 
-            // APIエラー確認
             if(data.status === "error"){
 
                 list.innerHTML="ニュース取得エラー"
@@ -93,30 +105,22 @@
                 return
             }
 
-            // ニュースデータを1つずつ処理
             data.data.forEach(news => {
 
-                // aタグ作成（リンク）
                 const a=document.createElement("a")
 
-                // URL設定
                 a.href=news.link
 
-                // 新しいタブで開く
                 a.target="_blank"
 
-                // CSSクラス
                 a.className="card"
 
-                // タイトル表示
                 a.textContent=news.title
 
-                // HTMLに追加
                 list.appendChild(a)
 
             })
-        }
-
+}
         // ページ読み込み時にニュース取得
         getNews()
 
