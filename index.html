@@ -80,6 +80,9 @@
         <script>
 
         // ニュース取得関数
+        //asyncは非同期関数を定義するためのキーワードで、APIアクセスのような時間のかかる処理を効率的に行うことができる
+        // awaitは非同期処理の完了を待つためのキーワードで、APIからのレスポンスを受け取るまで次の処理に進まないようにする ansycと組み合わせて使用することで、コードがシンプルで読みやすくなり、エラー処理も容易になる
+        // 例: APIアクセスは時間がかかるため、awaitを使ってレスポンスを待つことで、ユーザーにスムーズな体験を提供することができる
         async function getNews(){
 
             // カテゴリ取得
@@ -89,9 +92,13 @@
             const url = "https://python-news-tool.onrender.com/news?category=" + category
 
             // APIアクセス
+            //fetchはWeb APIにアクセスするための関数で、URLを指定してHTTPリクエストを送信し、レスポンスを受け取ることができる
+
             const response = await fetch(url)
 
             // JSON変換
+            //pythonのAPIから返されたレスポンスは通常JSON形式であるため、response.json()を使用してJavaScriptのオブジェクトに変換する必要がある
+            // 例: APIから{"status": "success", "data": [...] } のようなレスポンスが返された場合、response.json()を使用してJavaScriptのオブジェクトに変換することで、ニュースデータを簡単に操作できるようになる
             const data = await response.json()
 
             const list = document.getElementById("newsList")

@@ -1,7 +1,9 @@
 # HTTP通信を行うライブラリ
+# requestsはWebサイトからデータを取得するためのライブラリ
 import requests
 
 # HTML解析ライブラリ（スクレイピングで使用）
+# BeautifulSoupはHTMLを解析して、必要な情報を抽出するためのライブラリ
 from bs4 import BeautifulSoup
 
 
